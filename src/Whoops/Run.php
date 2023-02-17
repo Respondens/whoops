@@ -453,6 +453,12 @@ final class Run implements RunInterface
                 if ($pathMatches && $levelMatches) {
                     // Ignore the error, abort handling
                     // See https://github.com/filp/whoops/issues/418
+                    
+                    // redefine ignore to process handlers but not throw
+                    // this allows to tmp silently log deprecated errors
+                    $exception = new ErrorException($message, /*code*/ $level, /*severity*/ $level, $file, $line);
+                    $this->handleException($exception);
+                    
                     return true;
                 }
             }
